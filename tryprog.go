@@ -8,13 +8,13 @@ import (
 	"time"
 )
 
-// Tryprog tries the program at "path" and compares its output to "expected")
+// Try tries the program at "path" and compares its output to "expected")
 //func Try(expected []byte, path string, args []string) (err error) {
 func Try(expected []byte, path string) (err error) {
 
 	//cmd := exec.Command(path, args...)
 	cmd := exec.Command(path)
-	defer os.Remove(path)
+	// defer os.Remove(path)
 	var out []byte
 
 	c1 := make(chan string, 1)
@@ -27,7 +27,10 @@ func Try(expected []byte, path string) (err error) {
 	case <-time.After(time.Second * 1):
 		{
 			if err := cmd.Process.Kill(); err != nil {
-				panic(fmt.Sprintf("failed to kill: %s", err))
+				panic(fmt.Sprintf("Process.Kill failed: %s", err))
+			}
+			if err := cmd.Wait(); err != nil {
+				panic(fmt.Sprintf("Wait failed: %s", err))
 			}
 			err = fmt.Errorf("time-out-no-exit")
 		}
