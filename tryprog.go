@@ -9,9 +9,11 @@ import (
 )
 
 // Tryprog tries the program at "path" and compares its output to "expected")
-func Try(expected []byte, path string, args []string) (err error) {
+//func Try(expected []byte, path string, args []string) (err error) {
+func Try(expected []byte, path string) (err error) {
 
-	cmd := exec.Command(path, args...)
+	//cmd := exec.Command(path, args...)
+	cmd := exec.Command(path)
 	defer os.Remove(path)
 	var out []byte
 
